@@ -116,6 +116,8 @@ docker compose up -d --build
 ```
 - Start interacting with the API at ```localhost:8080/api/*```
 
+> NOTE: run ```docker compose down``` to shutdown the application.
+
 ## Testing
 
 - Run unit tests: `mvn test`
