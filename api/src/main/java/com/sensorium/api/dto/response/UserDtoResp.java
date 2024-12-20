@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDtoResp {
+	private String id;
 	private String name;
 	private String username;
 	private Set<Role> roles;
