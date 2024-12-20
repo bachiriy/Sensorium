@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sensorium.api.dto.request.ZoneDtoReq;
+import com.sensorium.api.dto.response.ResponseBody;
 import com.sensorium.api.dto.response.ZoneDtoResp;
 import com.sensorium.api.entity.Zone;
 import com.sensorium.api.exception.ResourceNotFoundException;
@@ -49,6 +50,24 @@ public class ZoneService implements IZoneService {
 		Zone zone = mapper.DtoToentity(dto);
 
 		return mapper.entityToDto(repository.save(zone));
+	}
+
+	@Override
+	public ZoneDtoResp update(ZoneDtoReq dto, String id) {
+		Zone zone = getById(id);
+
+		zone.setName(dto.getName());
+		zone.setLocation(dto.getLocation());
+		zone.setType(dto.getType());
+
+		return mapper.entityToDto(repository.save(zone));
+	}
+
+	@Override
+	public ResponseBody delete(String id) {
+		Zone zone = getById(id);
+		repository.delete(zone);
+		return ResponseBody.builder().message("Zone deleted successfully").build();
 	}
 
 }
