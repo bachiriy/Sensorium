@@ -107,17 +107,14 @@ This is a secure REST API for managing an IoT sensor infrastructure, developed u
 - Docker
 - MongoDB
 
-### Installation
+### Run the application 
 1. Clone the repository
-2. Configure application.properties
-3. Run `mvn clean install`
-4. Start the application
-
-### Running with Docker
+2. Run `mvn clean package` to generate the jar file
+3. Start the application
 ```bash
-docker build -t iot-sensor-platform .
-docker run -p 8080:8080 iot-sensor-platform
+docker compose up -d --build
 ```
+- Start interacting with the API at ```localhost:8080/api/*```
 
 ## Testing
 

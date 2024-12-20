@@ -1,0 +1,11 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/sensorium
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+
+  # jwt_secret: Kifwa9@&#&@!@FGaD8FaASJjfAdsoA2Asod3u4u9fd@*&#@@!MDSFD"
