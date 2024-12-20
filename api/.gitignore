@@ -38,3 +38,5 @@ mvnw*
 HELP.md
 MONGOME.md
 mvnw.cmd
+DOCKERHELP.md
+jenkins.credentials
