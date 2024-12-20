@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,6 +22,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Alert {
+	@Id
+	private String id;
 	@NotNull(message = "Alert Serverity is required")
 	private Severity severity;
 	@NotNull(message = "Alert Message is required")
