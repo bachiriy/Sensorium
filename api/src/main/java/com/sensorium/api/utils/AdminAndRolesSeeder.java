@@ -11,8 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.sensorium.api.entity.Role;
-import com.sensorium.api.entity.RoleEnum;
 import com.sensorium.api.entity.User;
+import com.sensorium.api.entity.enums.RoleEnum;
 import com.sensorium.api.repository.RoleRepository;
 import com.sensorium.api.repository.UserRepository;
 
