@@ -1,7 +1,10 @@
 package com.sensorium.api.dto.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.sensorium.api.entity.Alert;
+import com.sensorium.api.entity.Measure;
 import com.sensorium.api.entity.Zone;
 import com.sensorium.api.entity.enums.DeviceStatus;
 import com.sensorium.api.entity.enums.DeviceType;
@@ -20,4 +23,6 @@ public class DeviceDtoResp {
 	private DeviceStatus status;
 	private LocalDateTime lastCommunication;
 	private Zone zone;
+	private List<Alert> alerts;
+	private List<Measure> measures;
 }
