@@ -38,7 +38,7 @@ public class ZoneService implements IZoneService {
 	@Override
 	public List<ZoneDtoResp> getAll(Integer page) {
 		int size = 3;
-		Pageable pageable = PageRequest.of(page, size);
+		Pageable pageable = PageRequest.of(page - 1, size);
 
 		List<Zone> zones = repository.findAll(pageable).getContent();
 

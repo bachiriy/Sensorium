@@ -39,7 +39,7 @@ public class UserService implements IUserService {
 	@Override
 	public List<UserDtoResp> getAll(Integer page) {
 		int size = 3;
-		Pageable pageable = PageRequest.of(page, size);
+		Pageable pageable = PageRequest.of(page - 1, size);
 		List<User> users = repository.findAll(pageable).getContent();
 		return mapper.entitiesToDtos(users);
 	}
