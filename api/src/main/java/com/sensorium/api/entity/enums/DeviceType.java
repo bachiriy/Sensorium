@@ -1,5 +1,5 @@
 package com.sensorium.api.entity.enums;
 
 public enum DeviceType {
-	TEMPERTURE_SENSOR, Humidity_SENSOR
+	TEMPERTURE_SENSOR, HUMIDITY_SENSOR
 }
