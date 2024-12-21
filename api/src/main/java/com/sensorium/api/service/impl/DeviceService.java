@@ -40,7 +40,7 @@ public class DeviceService implements IDeviceService {
 	public List<DeviceDtoResp> getAll(Integer page) {
 		int size = 3;
 
-		Pageable pageable = PageRequest.of(page, size);
+		Pageable pageable = PageRequest.of(page - 1, size);
 		List<Device> devices = repository.findAll(pageable).getContent();
 		return mapper.entitiesToDtos(devices);
 	}
@@ -96,7 +96,7 @@ public class DeviceService implements IDeviceService {
 	@Override
 	public List<DeviceDtoResp> getDevicesByZone(String zoneId, Integer page) {
 		int size = 3;
-		Pageable pageable = PageRequest.of(page, size);
+		Pageable pageable = PageRequest.of(page - 1, size);
 		List<Device> devices = repository.findByZoneId(zoneId, pageable);
 		return mapper.entitiesToDtos(devices);
 	}

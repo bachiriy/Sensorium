@@ -24,7 +24,7 @@ public class DeviceController {
 	private DeviceService service;
 
 	@GetMapping("/user/devices")
-	public ResponseEntity<?> index(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+	public ResponseEntity<?> index(@RequestParam(defaultValue = "1", name = "page") Integer page) {
 		return ResponseEntity.ok(service.getAll(page));
 	}
 
@@ -50,7 +50,7 @@ public class DeviceController {
 	}
 
 	@GetMapping("/user/devices/zone/{zoneId}")
-	public ResponseEntity<?> searchByZone(@RequestParam(defaultValue = "0", name = "page") Integer page,
+	public ResponseEntity<?> searchByZone(@RequestParam(defaultValue = "1", name = "page") Integer page,
 			@PathVariable String zoneId) {
 		return ResponseEntity.ok(service.getDevicesByZone(zoneId, page));
 	}

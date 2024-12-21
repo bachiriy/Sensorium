@@ -24,7 +24,7 @@ public class ZoneController {
 	private ZoneService service;
 
 	@GetMapping("/user/zones")
-	public ResponseEntity<?> index(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+	public ResponseEntity<?> index(@RequestParam(defaultValue = "1", name = "page") Integer page) {
 		return ResponseEntity.ok(service.getAll(page));
 	}
 

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.sensorium.api.entity.enums.DeviceType;
 import com.sensorium.api.entity.enums.Severity;
 
 import lombok.AllArgsConstructor;
@@ -34,4 +35,52 @@ public class Alert {
 
 	@DBRef
 	private Device device;
+
+	public Alert(DeviceType deviceType, Double value) {
+		if (deviceType.equals(DeviceType.HUMIDITY_SENSOR)) {
+			checkHumitity(value);
+		} else {
+			checkTemperture(value);
+		}
+	}
+
+	private void checkTemperture(Double value) {
+		if (value > 40 || value < -10) {
+			message = "Immediate risk for equipment";
+			severity = Severity.CRITICAL;
+		} else if ((value > 35 && value <= 40) || (value > -5 && value <= -10)) {
+			message = "Worrying situation requiring rapid action";
+			severity = Severity.HIGH;
+		} else if ((value > 30 && value <= 35) || (value >= 0 && value <= -5)) {
+			message = "Situation to monitor";
+			severity = Severity.MEDIUM;
+		} else if ((value > 25 && value <= 30)) {
+			message = "Slight deviation from optimal values";
+			severity = Severity.LOW;
+		} else if (value >= 20 && value <= 25) {
+			message = "Temperature in the optimal range";
+			severity = Severity.NORMAL;
+		}
+
+	}
+
+	private void checkHumitity(Double value) {
+		if (value > 0.9 || value < 0.2) {
+			message = "Risk of material damage";
+			severity = Severity.CRITICAL;
+		} else if ((value > 0.8 && value <= 0.9) || (value > 0.2 && value <= 0.3)) {
+			message = "Unfavorable conditions";
+			severity = Severity.HIGH;
+		} else if ((value > 0.7 && value <= 0.8) || (value > 0.3 && value <= 0.4)) {
+			message = "Situation to monitor";
+			severity = Severity.MEDIUM;
+		} else if ((value > 0.65 && value <= 0.7) || (value > 0.4 && value <= 0.45)) {
+			message = "Slight deviation";
+			severity = Severity.LOW;
+		} else if (value > 0.45 && value <= 0.65) {
+			message = "Humidity in the optimal range";
+			severity = Severity.NORMAL;
+		}
+	}
+
 }
