@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,38 +27,45 @@ public class MeasureController {
 	@Autowired
 	private MeasureService service;
 
+	@Secured("ROLE_USER")
 	@GetMapping("/user/measures")
 	public ResponseEntity<?> index(@RequestParam(defaultValue = "1", name = "page") Integer page) {
 		return ResponseEntity.ok(service.getAll(page));
 	}
 
+	@Secured("ROLE_USER")
 	@GetMapping("/user/measures/{id}")
 	public ResponseEntity<?> show(@PathVariable String id) {
 		return ResponseEntity.ok(service.getDetails(id));
 	}
 
+	@Secured("ROLE_ADMIN")
 	@PostMapping("/admin/measures")
 	public ResponseEntity<?> store(@RequestBody @Valid MeasureDtoReq dto) {
 		return ResponseEntity.ok(service.create(dto));
 	}
 
+	@Secured("ROLE_ADMIN")
 	@PutMapping("/admin/measures/{id}")
 	public ResponseEntity<?> update(@RequestBody @Valid MeasureDtoReq dto, @PathVariable String id) {
 		return ResponseEntity.ok(service.update(dto, id));
 	}
 
+	@Secured("ROLE_ADMIN")
 	@DeleteMapping("/admin/measures/{id}")
 	public ResponseEntity<?> delete(@PathVariable String id) {
 
 		return ResponseEntity.ok(service.delete(id));
 	}
 
+	@Secured("ROLE_USER")
 	@GetMapping("/user/measures/device/{deviceId}")
 	public ResponseEntity<?> searchByDevice(@RequestParam(defaultValue = "1", name = "page") Integer page,
 			@PathVariable String deviceId) {
 		return ResponseEntity.ok(service.getDeviceMeasures(deviceId, page));
 	}
 
+	@Secured("ROLE_USER")
 	@GetMapping("/user/measures/export")
 	public ResponseEntity<?> exportMeasures() {
 		byte[] csv = service.generateMeasuresCsv();
