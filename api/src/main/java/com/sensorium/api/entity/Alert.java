@@ -38,7 +38,7 @@ public class Alert {
 
 	public Alert(DeviceType deviceType, Double value) {
 		if (deviceType.equals(DeviceType.HUMIDITY_SENSOR)) {
-			checkHumitity(value);
+			checkHumidity(value);
 		} else {
 			checkTemperture(value);
 		}
@@ -64,7 +64,7 @@ public class Alert {
 
 	}
 
-	private void checkHumitity(Double value) {
+	private void checkHumidity(Double value) {
 		if (value > 0.9 || value < 0.2) {
 			message = "Risk of material damage";
 			severity = Severity.CRITICAL;
