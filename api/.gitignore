@@ -36,7 +36,7 @@ build/
 .mvn/
 mvnw*
 HELP.md
-MONGOME.md
+MONGOHELP.md
 mvnw.cmd
 DOCKERHELP.md
-jenkins.credentials
+JENKINSHELP.md

@@ -1,0 +1,51 @@
+Jenkinsfile (Declarative Pipeline)
+
+/* Requires the Docker Pipeline plugin */
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
+        SONARQUBE_SERVER = 'SonarQube' // The configured SonarQube server name
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/bachiriy/Sensorium'
+            }
+        }
+
+        stage('SonarLint Verification') {
+            steps {
+                script {
+                    def scannerHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    withSonarQubeEnv('SonarQube') {
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=project-key -Dsonar.sources=src -Dsonar.java.binaries=target"
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/sensorium .'
+            }
+        }
+
+        stage('Push to DockerHub') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push $DOCKERHUB_CREDENTIALS_USR/sensorium'
+            }
+        }
+
+        stage('Deploy and Monitor') {
+            steps {
+                sh 'docker run -d -p 8080:8080 $DOCKERHUB_CREDENTIALS_USR/sensorium'
+                echo 'Monitoring with Spring Actuator is now accessible at http://localhost:8080/actuator'
+            }
+        }
+    }
+}
+
