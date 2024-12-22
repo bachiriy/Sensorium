@@ -40,11 +40,11 @@ public class Alert {
 		if (deviceType.equals(DeviceType.HUMIDITY_SENSOR)) {
 			checkHumidity(value);
 		} else {
-			checkTemperture(value);
+			checkTemperature(value);
 		}
 	}
 
-	private void checkTemperture(Double value) {
+	private void checkTemperature(Double value) {
 		if (value > 40 || value < -10) {
 			message = "Immediate risk for equipment";
 			severity = Severity.CRITICAL;
