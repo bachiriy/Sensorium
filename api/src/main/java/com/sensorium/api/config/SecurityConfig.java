@@ -41,7 +41,8 @@ public class SecurityConfig {
 				.httpBasic()
 
 				// Authorize requests
-				.and().authorizeRequests().antMatchers("/api/auth/**").permitAll().antMatchers("/api/user/**")
+				.and().authorizeRequests().antMatchers("/swagger-ui/**").permitAll().antMatchers("/v3/api-docs/**")
+				.permitAll().antMatchers("/api/auth/**").permitAll().antMatchers("/api/user/**")
 				.hasAnyRole("USER", "ADMIN").antMatchers("/api/admin/**").hasRole("ADMIN").anyRequest().authenticated()
 
 				// Session management
