@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -23,7 +22,6 @@ public class User {
 	@NotBlank(message = "User name is required")
 	private String name;
 
-	@Indexed(unique = true)
 	@NotNull(message = "Username is required")
 	@NotBlank(message = "Username is required")
 	private String username;
@@ -33,5 +31,7 @@ public class User {
 	@DBRef
 	private Set<Role> roles;
 	private Boolean enable;
+
+	private Integer tentative;
 
 }

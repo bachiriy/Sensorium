@@ -41,4 +41,9 @@ public class UserController {
 		return ResponseEntity.ok(service.unassignRole(id, dto));
 	}
 
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/status/{id}")
+	public ResponseEntity<?> index(@PathVariable String id) {
+		return ResponseEntity.ok(service.getStatus(id));
+	}
 }

@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sensorium.api.dto.request.LoginReq;
 import com.sensorium.api.dto.request.UserDtoReq;
 import com.sensorium.api.dto.response.ResponseBody;
-import com.sensorium.api.service.impl.AuthService;
+import com.sensorium.api.service.IAuthService;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
 	@Autowired
-	private AuthService service;
+	private IAuthService service;
 
 	@Value("${jwt.header.string}")
 	private String HEADER_STRING;

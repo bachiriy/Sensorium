@@ -1,5 +1,6 @@
 package com.sensorium.api.service.impl;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -9,6 +10,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +35,7 @@ import com.sensorium.api.security.jwt.TokenProvider;
 import com.sensorium.api.service.IAuthService;
 
 @Service
+@EnableScheduling
 public class AuthService implements IAuthService {
 
 	@Autowired
@@ -47,18 +51,28 @@ public class AuthService implements IAuthService {
 	private UserRepository userRepo;
 
 	@Autowired
+	UserService userService;
+
+	@Autowired
 	private RoleRepository roleRepository;
 
 	@Autowired
 	private PasswordEncoder encoder;
+	@Autowired
+	TaskScheduler taskScheduler;
 
 	@Override
 	public LoginResp login(LoginReq dto, HttpServletResponse response) {
 		User savedUser = userRepo.findByUsername(dto.getUsername())
 				.orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
+		if (savedUser.getEnable() == false) {
+			throw new RuntimeException("user is blocked");
+		}
+
 		if (!encoder.matches(dto.getPassword(), savedUser.getPassword())) {
-			throw new RuntimeException("Password is wrong");
+			blockUserAfter3tentatives(dto.getUsername());
+			throw new RuntimeException("Password is wrong " + savedUser.getId());
 		}
 		Authentication authentication = authManager
 				.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
@@ -84,6 +98,36 @@ public class AuthService implements IAuthService {
 
 		return LoginResp.builder().name(savedUser.getName()).username(savedUser.getUsername())
 				.roles(savedUser.getRoles()).enable(savedUser.getEnable()).build();
+	}
+
+	private void blockUserAfter3tentatives(String username) {
+		User user = userRepo.findByUsername(username)
+				.orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+		System.out.println("user id: " + user.getId());
+		Integer tentatives = user.getTentative() != null ? user.getTentative() : 0;
+
+		if (tentatives == 2) {
+			user.setEnable(false);
+			user.setTentative(0);
+			userService.updateUserTentatives(user);
+
+			System.out.println("user blocked");
+			Instant unblockTime = Instant.now().plusSeconds(60);
+			System.out.println("waiting 6 sec...");
+
+			taskScheduler.schedule(() -> {
+				user.setEnable(true);
+				userService.updateUserTentatives(user);
+				System.out.println("user unblocked");
+			}, unblockTime);
+
+		} else {
+			tentatives++;
+			System.out.println("user still have chance tentatives:" + tentatives + " " + user.getRoles());
+			user.setTentative(tentatives);
+			userService.updateUserTentatives(user);
+		}
+
 	}
 
 	@Override

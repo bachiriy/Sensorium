@@ -1,7 +1,9 @@
 package com.sensorium.api.service.impl;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -77,6 +79,26 @@ public class UserService implements IUserService {
 		user.getRoles().remove(role);
 		repository.save(user);
 		return ResponseBody.builder().message("User assigned with " + dto.getRole() + " role successfully").build();
+	}
+
+	public Object getStatus(String id) {
+		User user = getById(id);
+		return user.getEnable();
+	}
+
+	public User updateUserTentatives(User user) {
+		User existentUser = getById(user.getId());
+
+		Set<Role> roles = new HashSet<Role>();
+		existentUser.getRoles().forEach(r -> {
+			Role role = roleRepository.findByName(r.getName().toString()).get();
+			roles.add(role);
+		});
+		existentUser.setEnable(user.getEnable());
+		existentUser.setTentative(user.getTentative());
+		existentUser.setRoles(roles);
+
+		return repository.save(existentUser);
 	}
 
 }
