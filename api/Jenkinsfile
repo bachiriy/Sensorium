@@ -1,12 +1,9 @@
-Jenkinsfile (Declarative Pipeline)
-
-/* Requires the Docker Pipeline plugin */
 pipeline {
     agent any
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
-        SONARQUBE_SERVER = 'SonarQube' // The configured SonarQube server name
+        SONARQUBE_SERVER = 'SonarQube' 
     }
 
     stages {
@@ -16,16 +13,18 @@ pipeline {
             }
         }
 
-        stage('SonarLint Verification') {
-            steps {
-                script {
-                    def scannerHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                    withSonarQubeEnv('SonarQube') {
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=project-key -Dsonar.sources=src -Dsonar.java.binaries=target"
-                    }
-                }
-            }
-        }
+//        stage('SonarLint Verification') {
+//            withSonarQubeEnv(credentialsId: 'sonarqube-id', installationName: 'SonarQube') {
+//                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+//            }
+    //        steps {
+    //            withSonarQubeEnv('SonarQube') {
+    //                withMaven(maven:'Maven 3.5') {
+    //                    sh 'mvn clean package sonar:sonar'
+    //                }
+    //            }
+    //        }
+    //    }
 
         stage('Build Docker Image') {
             steps {
@@ -48,4 +47,3 @@ pipeline {
         }
     }
 }
-

@@ -29,10 +29,13 @@ public class Device {
 	@NotNull(message = "Device name is required")
 	@NotBlank(message = "Device name is required")
 	private String name;
+
 	@NotNull(message = "Device type is required")
 	private DeviceType type;
+
 	@NotNull(message = "Device status is required")
 	private DeviceStatus status;
+
 	@NotNull(message = "Device Last Communication is required")
 	@Field(name = "last_communication")
 	private LocalDateTime lastCommunication;
@@ -42,4 +45,9 @@ public class Device {
 	private List<Alert> alerts;
 
 	private List<Measure> measures;
+
+
+	private boolean active;
+
+	public boolean getActive(){return this.active;}
 }

@@ -24,7 +24,7 @@ public class DeviceController {
 	@Autowired
 	private DeviceService service;
 
-	@Secured("ROLE_USER")
+	// @Secured("ROLE_USER")
 	@GetMapping("/user/devices")
 	public ResponseEntity<?> index(@RequestParam(defaultValue = "1", name = "page") Integer page) {
 		return ResponseEntity.ok(service.getAll(page));
@@ -36,13 +36,13 @@ public class DeviceController {
 		return ResponseEntity.ok(service.getDetails(id));
 	}
 
-	@Secured("ROLE_ADMIN")
+	// @Secured("ROLE_ADMIN")
 	@PostMapping("/admin/devices")
 	public ResponseEntity<?> store(@RequestBody @Valid DeviceDtoReq dto) {
 		return ResponseEntity.ok(service.create(dto));
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")p
 	@PutMapping("/admin/devices/{id}")
 	public ResponseEntity<?> update(@RequestBody @Valid DeviceDtoReq dto, @PathVariable String id) {
 		return ResponseEntity.ok(service.update(dto, id));

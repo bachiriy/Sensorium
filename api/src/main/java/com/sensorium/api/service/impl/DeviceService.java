@@ -87,6 +87,8 @@ public class DeviceService implements IDeviceService {
 		device.setZone(zone);
 		device.setStatus(DeviceStatus.ACTIVE);
 
+		device.setActive(true);
+
 		return mapper.entityToDto(repository.save(device));
 	}
 
@@ -105,6 +107,7 @@ public class DeviceService implements IDeviceService {
 		}
 		device.setName(dto.getName());
 		device.setZone(zone);
+		
 
 		return mapper.entityToDto(repository.save(device));
 	}

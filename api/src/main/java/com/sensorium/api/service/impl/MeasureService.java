@@ -68,6 +68,11 @@ public class MeasureService implements IMeasureService {
 		Device device = deviceService.getById(dto.getDeviceId());
 		Measure measure = mapper.DtoToentity(dto);
 		LocalDateTime now = LocalDateTime.now();
+
+		if (!device.getActive()) {
+			throw new ResourceNotFoundException("[403] : Un device inactif ne doit pas pouvoir envoyer de mesures.");
+		}
+
 		measure.setDevice(device);
 		measure.setTimestamp(now);
 
